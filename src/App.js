@@ -5,7 +5,7 @@ import ContactsList from "./Components/ContactsList/ContactsList";
 import Filter from "./Components/Filter/Filter";
 import "./App.css";
 
-function App({ onAddContact, onRemoveContact, onFilterContact }) {
+function App() {
   const dispatch = useDispatch();
   const { items, filter } = useSelector((state) => state.contactsReducer);
 
