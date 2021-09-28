@@ -1,11 +1,28 @@
 import { v4 as uuidv4 } from "uuid";
+import { addContacts } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 import s from "./ContactForm.module.css";
 import Button from "../Button/Button";
 import { useState } from "react";
 
-function ContactForm({ handleSubmit }) {
+function ContactForm() {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.contactsReducer);
+
+  const addContact = (nextContact) => {
+    const sameName = items.some(
+      (contact) =>
+        contact.name.toLocaleLowerCase() ===
+        nextContact.name.toLocaleLowerCase()
+    );
+    if (sameName) {
+      alert(`${nextContact.name} is already in contacts`);
+    } else {
+      return dispatch(addContacts(nextContact));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +40,7 @@ function ContactForm({ handleSubmit }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit({ name, number, id: uuidv4() });
+    addContact({ name, number, id: uuidv4() });
     reset();
   };
 
